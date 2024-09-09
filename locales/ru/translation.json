@@ -1,0 +1,27 @@
+{
+  "pageTitle": "RSS агрегатор",
+  "appTitle": "RSS агрегатор",
+  "intro": "Начните читать RSS сегодня! Это легко, это красиво.",
+  "urlInputPlaceholder": "Введите URL RSS",
+  "urlInputLabel": "Ссылка RSS",
+  "addButton": "Добавить",
+  "exampleText": "Пример: http://news.mail.ru/rss/economics/91/",
+  "feedback": "Обратная связь",
+  "modalTitle": "Предпросмотр",
+  "networkError": "Ошибка сети",
+  "modalBody": "",
+  "readMore": "Читать полностью",
+  "closeButton": "Закрыть",
+  "posts": "Посты",
+  "feeds": "Фиды",
+  "footerText": "Создано на",
+  "footerLink": "Hexlet",
+  "validation": {
+    "required": "Нужно указать URL",
+    "url": "Введите валидный URL",
+    "notOneOf": "Такое значение не разрешено"
+  },
+  "urlAlreadyExists": "Такой URL уже добавлен",
+  "feedTitle": "{{title}}",
+  "feedDescription": "{{description}}"
+}

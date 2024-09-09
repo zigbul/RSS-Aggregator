@@ -1,0 +1,27 @@
+{
+  "pageTitle": "RSS Aggregator",
+  "appTitle": "RSS Aggregator",
+  "intro": "Start reading RSS today! It's easy, it's beautiful.",
+  "urlInputPlaceholder": "Enter RSS URL",
+  "urlInputLabel": "RSS URL",
+  "addButton": "Add",
+  "exampleText": "Example: http://news.mail.ru/rss/economics/91/",
+  "feedback": "Feedback",
+  "modalTitle": "Preview",
+  "modalBody": "",
+  "networkError": "Network Error",
+  "readMore": "Read More",
+  "closeButton": "Close",
+  "posts": "Posts",
+  "feeds": "Feeds",
+  "footerText": "Created by",
+  "footerLink": "Hexlet",
+  "validation": {
+    "required": "This field is required",
+    "url": "Enter a valid URL",
+    "notOneOf": "This value is not allowed"
+  },
+  "urlAlreadyExists": "This URL is already added",
+  "feedTitle": "{{title}}",
+  "feedDescription": "{{description}}"
+}

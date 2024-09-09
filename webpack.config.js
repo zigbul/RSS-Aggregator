@@ -2,34 +2,34 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './src/index.js', // Входная точка приложения
+  entry: './src/index.js',
   output: {
-    filename: 'bundle.js', // Имя файла сборки
-    path: path.resolve(__dirname, 'dist'), // Путь для сборки
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
   },
-  mode: 'development', // Устанавливаем режим разработки
+  mode: 'development',
   module: {
     rules: [
       {
-        test: /\.js$/, // Для всех .js файлов
-        exclude: /node_modules/, // Исключаем node_modules
+        test: /\.js$/,
+        exclude: /node_modules/,
         use: {
-          loader: 'babel-loader', // Используем Babel для транспиляции
+          loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env'], // Пресет для современных возможностей JS
+            presets: ['@babel/preset-env'],
           },
         },
       },
       {
-        test: /\.css$/, // Обрабатываем все .css файлы
-        use: ['style-loader', 'css-loader'], // Используем style-loader и css-loader
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html', // Шаблон HTML-файла
-      filename: 'index.html', // Имя создаваемого файла в папке dist
+      template: './src/index.html',
+      filename: 'index.html',
     }),
   ],
 };

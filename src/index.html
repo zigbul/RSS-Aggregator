@@ -34,16 +34,13 @@
               target="_blank"
               rel="noopener noreferrer"
               data-i18n="readMore"
-              >Читать полностью</a
-            >
+            ></a>
             <button
               type="button"
               class="btn btn-secondary"
               data-bs-dismiss="modal"
               data-i18n="closeButton"
-            >
-              Закрыть
-            </button>
+            ></button>
           </div>
         </div>
       </div>
@@ -52,7 +49,7 @@
       <section class="container-fluid bg-dark p-5">
         <div class="row">
           <div class="col-md-10 col-lg-8 mx-auto text-white">
-            <h1 class="display-3 mb-0" data-i18n="appTitle">RSS агрегатор</h1>
+            <h1 class="display-3 mb-0" data-i18n="appTitle"></h1>
             <p class="lead" data-i18n="intro"></p>
             <form id="form" action="" class="rss-form text-body">
               <div class="row">
@@ -67,38 +64,37 @@
                       class="form-control w-100"
                       placeholder="ссылка RSS"
                       autocomplete="off"
-                      data-i18n="urlInputPlaceholder"
+                      data-i18n="urlInput"
                     />
                     <label for="url-input" data-i18n="urlInputLabel"></label>
                   </div>
                 </div>
                 <div class="col-auto">
                   <button
+                    id="addButton"
                     type="submit"
                     aria-label="add"
                     class="h-100 btn btn-lg btn-primary px-sm-5"
                     data-i18n="addButton"
-                  >
-                    Добавить
-                  </button>
+                  ></button>
                 </div>
               </div>
             </form>
-            <p class="mt-2 mb-0 text-muted" data-i18n="exampleText"></p>
+            <p id="exampleText" class="mt-2 mb-0 text-muted" data-i18n="exampleText"></p>
             <p class="feedback m-0 position-absolute small text-danger" data-i18n="feedback"></p>
           </div>
         </div>
       </section>
       <section class="container-fluid container-xxl p-5">
         <div class="row">
-          <div class="col-md-10 col-lg-8 order-1 mx-auto posts" data-i18n="posts"></div>
-          <div class="col-md-10 col-lg-4 mx-auto order-0 order-lg-1 feeds" data-i18n="feeds"></div>
+          <div class="col-md-10 col-lg-8 order-1 mx-auto posts"></div>
+          <div class="col-md-10 col-lg-4 mx-auto order-0 order-lg-1 feeds"></div>
         </div>
       </section>
     </main>
     <footer class="footer border-top py-3 mt-5 bg-light">
       <div class="container-xl">
-        <div class="text-center" data-i18n="footerText">
+        <div id="footerText" class="text-center" data-i18n="footerText">
           <a
             href="https://ru.hexlet.io/professions/frontend/projects/11"
             target="_blank"

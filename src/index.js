@@ -10,6 +10,29 @@ const state = {
   readPosts: new Set(),
 };
 
+const elements = {
+  pageTitle: document.querySelector('title'),
+  modalTitle: document.querySelector('.modal-title'),
+  modalBody: document.querySelector('.modal-body'),
+  readMore: document.querySelector('.modal-footer a'),
+  closeButton: document.querySelector('.modal-footer button'),
+  appTitle: document.querySelector('h1'),
+  intro: document.querySelector('.lead'),
+  urlInput: document.querySelector('.form-floating input'),
+  urlInputLabel: document.querySelector('.form-floating label'),
+  addButton: document.querySelector('#addButton'),
+  exampleText: document.querySelector('#exampleText'),
+  feedback: document.querySelector('.feedback'),
+  footerText: document.querySelector('#footerText'),
+  footerLink: document.querySelector('#footerText a'),
+};
+
+const renderInitialText = (elements, i18n) => {
+  for (let elementKey in elements) {
+    elements[elementKey].textContent = i18n.t(elementKey);
+  }
+};
+
 i18next.on('initialized', () => {
   yup.setLocale({
     mixed: {
@@ -21,25 +44,8 @@ i18next.on('initialized', () => {
     },
   });
 
-  updateTextContent();
+  renderInitialText(elements, i18next);
 });
-
-const updateTextContent = () => {
-  document.querySelectorAll('[data-i18n]').forEach((element) => {
-    const i18nKey = element.getAttribute('data-i18n');
-    if (
-      element.tagName === 'INPUT' ||
-      element.tagName === 'TEXTAREA' ||
-      element.tagName === 'BUTTON'
-    ) {
-      element.placeholder = i18next.t(i18nKey);
-    } else if (element.tagName === 'LABEL') {
-      element.textContent = i18next.t(i18nKey);
-    } else {
-      element.textContent = i18next.t(i18nKey);
-    }
-  });
-};
 
 const schema = yup.object().shape({
   url: yup.string().url('Введите корректный URL').required('Поле не должно быть пустым'),

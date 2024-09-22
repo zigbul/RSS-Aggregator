@@ -14,6 +14,7 @@
   "footerText": "Создано на",
   "footerLink": "Hexlet",
 
+  "parseError": "Ошибка парсинга",
   "networkError": "Ошибка сети",
   "validation": {
     "required": "Нужно указать URL",

@@ -13,7 +13,7 @@ const parseRSS = (data) => {
   const parseError = doc.querySelector('parsererror');
 
   if (parseError) {
-    throw new Error('Ошибка парсинга RSS');
+    throw new Error(i18next.t('parseError'));
   }
 
   const feedTitle = doc.querySelector('channel > title').textContent;
@@ -132,7 +132,7 @@ export const app = () => {
   });
 
   const schema = yup.object().shape({
-    url: yup.string().url('Введите корректный URL').required('Поле не должно быть пустым'),
+    url: yup.string().url(i18next.t('validation.url')).required(i18next.t('valudation.required')),
   });
 
   document.querySelector('#form').addEventListener('submit', (e) => {

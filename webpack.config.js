@@ -32,4 +32,9 @@ module.exports = {
       filename: 'index.html',
     }),
   ],
+  devServer: {
+    watchFiles: path.join(__dirname, 'src'),
+    port: 3000,
+    hot: true,
+  },
 };

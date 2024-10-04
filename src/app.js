@@ -90,39 +90,76 @@ export const app = () => {
     return !state.feeds.some((feed) => feed.url === url);
   };
 
+  function createElement(tag = 'div', classList = [], text = '', children = []) {
+    const element = document.createElement(tag);
+    element.classList.add(...classList);
+    element.textContent = text;
+
+    if (children.length) {
+      children.forEach((child) => element.append(child));
+    }
+
+    return element;
+  }
+
+  function createFeedBlock(feed) {
+    const cardTitle = createElement(
+      'h5',
+      ['card-title'],
+      i18next.t('feedTitle', { title: feed.title }),
+    );
+    const cardText = createElement(
+      'p',
+      ['card-text'],
+      i18next.t('feedDescription', { description: feed.description }),
+    );
+    const cardBody = createElement('div', ['card-body'], null, [cardTitle, cardText]);
+    const card = createElement('div', ['card', 'mb-3'], null, [cardBody]);
+
+    return card;
+  }
+
+  function createPostsBlock(post) {
+    const isPostRead = state.readPosts.has(post.id);
+    const containerClassList = [
+      'list-group-item',
+      'd-flex',
+      'justify-content-between',
+      'align-items-center',
+      isPostRead ? 'fw-normal' : 'fw-bold',
+    ];
+
+    const link = createElement('a', [], post.title);
+    link.href = post.link;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+
+    const button = createElement(
+      'button',
+      ['btn', 'btn-primary', 'btn-sm'],
+      i18next.t('previewButton'),
+    );
+
+    const container = createElement('li', containerClassList, null, [link, button]);
+
+    return container;
+  }
+
   const updateUI = () => {
     const feedsContainer = document.querySelector('.feeds');
     const postsContainer = document.querySelector('.posts');
 
-    feedsContainer.innerHTML = state.feeds
-      .map(
-        (feed) => `
-        <div class="card mb-3">
-          <div class="card-body">
-            <h5 class="card-title">${i18next.t('feedTitle', { title: feed.title })}</h5>
-            <p class="card-text">${i18next.t('feedDescription', {
-              description: feed.description,
-            })}</p>
-          </div>
-        </div>
-      `,
-      )
-      .join('');
+    feedsContainer.innerHTML = '';
 
-    postsContainer.innerHTML = state.posts
-      .map(
-        (post) => `
-        <li class="list-group-item d-flex justify-content-between align-items-center ${
-          state.readPosts.has(post.id) ? 'fw-normal' : 'fw-bold'
-        }">
-          <a href="${post.link}" target="_blank" rel="noopener noreferrer">${post.title}</a>
-          <button class="btn btn-primary btn-sm" data-post-id="${post.id}">${i18next.t(
-          'previewButton',
-        )}</button>
-        </li>
-      `,
-      )
-      .join('');
+    state.feeds.forEach((feed) => {
+      feedsContainer.append(createFeedBlock(feed));
+    });
+
+    postsContainer.innerHTML = '';
+
+    state.posts.forEach((post) => {
+      postsContainer.append(createPostsBlock(post));
+    });
   };
 
   i18next

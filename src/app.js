@@ -9,7 +9,7 @@ const renderInitialText = (elements, i18n) => {
 
 const parseRSS = (data) => {
   const parser = new DOMParser();
-  const doc = parser.parseFromString(data, 'application/xml');
+  const doc = parser.parseFromString(data.contents, 'application/xml');
   const parseError = doc.querySelector('parsererror');
 
   if (parseError) {
@@ -18,7 +18,6 @@ const parseRSS = (data) => {
 
   const feedTitle = doc.querySelector('channel > title').textContent;
   const feedDescription = doc.querySelector('channel > description').textContent;
-
   const items = doc.querySelectorAll('item');
   const posts = Array.from(items).map((item) => ({
     title: item.querySelector('title').textContent,
@@ -37,41 +36,6 @@ const parseRSS = (data) => {
   };
 };
 
-const updateUI = () => {
-  const feedsContainer = document.querySelector('.feeds');
-  const postsContainer = document.querySelector('.posts');
-
-  feedsContainer.innerHTML = state.feeds
-    .map(
-      (feed) => `
-      <div class="card mb-3">
-        <div class="card-body">
-          <h5 class="card-title">${i18next.t('feedTitle', { title: feed.title })}</h5>
-          <p class="card-text">${i18next.t('feedDescription', {
-            description: feed.description,
-          })}</p>
-        </div>
-      </div>
-    `,
-    )
-    .join('');
-
-  postsContainer.innerHTML = state.posts
-    .map(
-      (post) => `
-      <li class="list-group-item d-flex justify-content-between align-items-center ${
-        state.readPosts.has(post.id) ? 'fw-normal' : 'fw-bold'
-      }">
-        <a href="${post.link}" target="_blank" rel="noopener noreferrer">${post.title}</a>
-        <button class="btn btn-primary btn-sm" data-post-id="${post.id}">${i18next.t(
-        'previewButton',
-      )}</button>
-      </li>
-    `,
-    )
-    .join('');
-};
-
 const handleError = (message) => {
   const feedbackElement = document.querySelector('.feedback');
   feedbackElement.textContent = i18next.t(message);
@@ -88,8 +52,9 @@ const resetForm = () => {
   feedbackElement.classList.remove('text-danger');
 };
 
-const checkUniqueUrl = (url) => {
-  return !state.feeds.some((feed) => feed.url === url);
+const makeUrl = (userInput) => {
+  const baseUrl = 'https://allorigins.hexlet.app/get?url=';
+  return new URL(baseUrl + encodeURIComponent(userInput)).href;
 };
 
 export const app = () => {
@@ -120,6 +85,45 @@ export const app = () => {
   const schema = yup.object().shape({
     url: yup.string().url(i18next.t('validation.url')).required(i18next.t('validation.required')),
   });
+
+  const checkUniqueUrl = (url) => {
+    return !state.feeds.some((feed) => feed.url === url);
+  };
+
+  const updateUI = () => {
+    const feedsContainer = document.querySelector('.feeds');
+    const postsContainer = document.querySelector('.posts');
+
+    feedsContainer.innerHTML = state.feeds
+      .map(
+        (feed) => `
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">${i18next.t('feedTitle', { title: feed.title })}</h5>
+            <p class="card-text">${i18next.t('feedDescription', {
+              description: feed.description,
+            })}</p>
+          </div>
+        </div>
+      `,
+      )
+      .join('');
+
+    postsContainer.innerHTML = state.posts
+      .map(
+        (post) => `
+        <li class="list-group-item d-flex justify-content-between align-items-center ${
+          state.readPosts.has(post.id) ? 'fw-normal' : 'fw-bold'
+        }">
+          <a href="${post.link}" target="_blank" rel="noopener noreferrer">${post.title}</a>
+          <button class="btn btn-primary btn-sm" data-post-id="${post.id}">${i18next.t(
+          'previewButton',
+        )}</button>
+        </li>
+      `,
+      )
+      .join('');
+  };
 
   i18next
     .init({
@@ -157,8 +161,8 @@ export const app = () => {
         schema
           .validate({ url })
           .then(() => {
-            fetch(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(url)}`)
-              .then((response) => response.text())
+            fetch(makeUrl(url))
+              .then((response) => response.json())
               .then((data) => {
                 const { feed, posts } = parseRSS(data);
                 state.feeds.push(feed);

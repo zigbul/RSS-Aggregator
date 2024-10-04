@@ -117,61 +117,69 @@ export const app = () => {
     footerLink: document.querySelector('#footerText a'),
   };
 
-  i18next.on('initialized', () => {
-    yup.setLocale({
-      mixed: {
-        required: i18next.t('validation.required'),
-        notOneOf: i18next.t('validation.notOneOf'),
-      },
-      string: {
-        url: i18next.t('validation.url'),
-      },
-    });
-
-    renderInitialText(elements, i18next);
-  });
-
   const schema = yup.object().shape({
-    url: yup.string().url(i18next.t('validation.url')).required(i18next.t('valudation.required')),
+    url: yup.string().url(i18next.t('validation.url')).required(i18next.t('validation.required')),
   });
 
-  document.querySelector('#form').addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const input = document.querySelector('#url-input');
-    const url = input.value.trim();
-
-    if (!checkUniqueUrl(url)) {
-      input.classList.add('is-invalid');
-      handleError('urlAlreadyExists');
-      return;
-    }
-
-    schema
-      .validate({ url })
-      .then(() => {
-        fetch(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(url)}`)
-          .then((response) => response.text())
-          .then((data) => {
-            const { feed, posts } = parseRSS(data);
-            state.feeds.push(feed);
-            state.posts.push(...posts);
-            updateUI();
-            resetForm();
-          })
-          .catch(() => handleError('networkError'));
-      })
-      .catch((error) => {
-        input.classList.add('is-invalid');
-        handleError(error.message);
+  i18next
+    .init({
+      fallbackLng: 'ru',
+      debug: true,
+      backend: {
+        loadPath: '/locales/{{lng}}/translation.json',
+      },
+    })
+    .then(() => {
+      yup.setLocale({
+        mixed: {
+          required: i18next.t('validation.required'),
+          notOneOf: i18next.t('validation.notOneOf'),
+        },
+        string: {
+          url: i18next.t('validation.url'),
+        },
       });
-  });
 
-  document.querySelector('.posts').addEventListener('click', (e) => {
-    if (e.target.tagName === 'BUTTON') {
-      const postId = e.target.getAttribute('data-post-id');
-      state.readPosts.add(postId);
-      updateUI();
-    }
-  });
+      renderInitialText(elements, i18next);
+
+      document.querySelector('#form').addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const input = document.querySelector('#url-input');
+        const url = input.value.trim();
+
+        if (!checkUniqueUrl(url)) {
+          input.classList.add('is-invalid');
+          handleError('urlAlreadyExists');
+          return;
+        }
+
+        schema
+          .validate({ url })
+          .then(() => {
+            fetch(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(url)}`)
+              .then((response) => response.text())
+              .then((data) => {
+                const { feed, posts } = parseRSS(data);
+                state.feeds.push(feed);
+                state.posts.push(...posts);
+                updateUI();
+                resetForm();
+              })
+              .catch(() => handleError('networkError'));
+          })
+          .catch((error) => {
+            input.classList.add('is-invalid');
+            handleError(error.message);
+          });
+      });
+
+      document.querySelector('.posts').addEventListener('click', (e) => {
+        if (e.target.tagName === 'BUTTON') {
+          const postId = e.target.getAttribute('data-post-id');
+          state.readPosts.add(postId);
+          updateUI();
+        }
+      });
+    });
 };

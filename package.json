@@ -12,6 +12,7 @@
     "i18next": "^23.15.0",
     "i18next-browser-languagedetector": "^8.0.0",
     "i18next-xhr-backend": "^3.2.2",
+    "on-change": "^5.0.1",
     "yup": "^1.4.0"
   },
   "devDependencies": {

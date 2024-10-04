@@ -1,5 +1,6 @@
 import * as yup from 'yup';
 import i18next from './i18n';
+import onChange from 'on-change';
 
 const renderInitialText = (elements, i18n) => {
   for (let elementKey in elements) {
@@ -162,6 +163,12 @@ export const app = () => {
     });
   };
 
+  const watchedState = onChange(state, (path) => {
+    if (path === 'feeds' || path === 'posts' || path === 'readPosts') {
+      updateUI();
+    }
+  });
+
   i18next
     .init({
       fallbackLng: 'ru',
@@ -202,9 +209,8 @@ export const app = () => {
               .then((response) => response.json())
               .then((data) => {
                 const { feed, posts } = parseRSS(data);
-                state.feeds.push(feed);
-                state.posts.push(...posts);
-                updateUI();
+                watchedState.feeds.push(feed);
+                watchedState.posts.push(...posts);
                 resetForm();
               })
               .catch(() => handleError('networkError'));
@@ -218,8 +224,7 @@ export const app = () => {
       document.querySelector('.posts').addEventListener('click', (e) => {
         if (e.target.tagName === 'BUTTON') {
           const postId = e.target.getAttribute('data-post-id');
-          state.readPosts.add(postId);
-          updateUI();
+          watchedState.readPosts.add(postId);
         }
       });
     });

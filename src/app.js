@@ -37,9 +37,14 @@ const parseRSS = (data) => {
   };
 };
 
-const handleError = (message) => {
+const updateFeedbackText = (message) => {
   const feedbackElement = document.querySelector('.feedback');
   feedbackElement.textContent = i18next.t(message);
+
+  if (message === i18next.t('success')) {
+    feedbackElement.classList.add('text-success');
+  }
+
   feedbackElement.classList.add('text-danger');
 };
 
@@ -79,7 +84,7 @@ export const app = () => {
     addButton: document.querySelector('#addButton'),
     exampleText: document.querySelector('#exampleText'),
     footerText: document.querySelector('#footerText'),
-    footerLink: document.querySelector('#footerText a'),
+    footerLink: document.querySelector('#footerLink'),
   };
 
   const schema = yup.object().shape({
@@ -197,7 +202,7 @@ export const app = () => {
 
         if (!checkUniqueUrl(url)) {
           input.classList.add('is-invalid');
-          handleError('urlAlreadyExists');
+          updateFeedbackText('urlAlreadyExists');
           return;
         }
 
@@ -211,12 +216,13 @@ export const app = () => {
                 watchedState.feeds.push(feed);
                 watchedState.posts.push(...posts);
                 resetForm();
+                updateFeedbackText(i18next.t('success'));
               })
-              .catch(() => handleError('networkError'));
+              .catch(() => updateFeedbackText('networkError'));
           })
           .catch((error) => {
             input.classList.add('is-invalid');
-            handleError(error.message);
+            updateFeedbackText(error.message);
           });
       });
 

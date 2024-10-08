@@ -75,6 +75,8 @@ export const app = () => {
   const state = {
     feeds: [],
     posts: [],
+    isOpen: false,
+    currentPost: null,
     feedPostIds: {},
     readPosts: new Set(),
   };
@@ -142,13 +144,11 @@ export const app = () => {
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
 
-    const button = createElement(
-      'button',
-      ['btn', 'btn-primary', 'btn-sm'],
-      i18next.t('previewButton'),
-    );
-    button.dataBsToggle = 'modal';
-    button.dataBsTarget = '#exampleModal';
+    const button = createElement('button', ['btn', 'btn-primary'], i18next.t('previewButton'));
+    button.setAttribute('type', 'button');
+    button.setAttribute('data-bs-toggle', 'modal');
+    button.setAttribute('data-bs-target', '#exampleModal');
+    button.setAttribute('data-post-id', post.id);
 
     const container = createElement('li', containerClassList, null, [link, button]);
 
@@ -170,10 +170,27 @@ export const app = () => {
     state.posts.forEach((post) => {
       postsContainer.append(createPostsBlock(post));
     });
+
+    if (state.currentPost) {
+      const modalTitle = document.querySelector('.modal-title');
+      modalTitle.textContent = i18next.t('feedTitle', { title: state.currentPost.title });
+
+      const modalBody = document.querySelector('.modal-body');
+      modalBody.textContent = i18next.t('feedDescription', {
+        description: state.currentPost.description,
+      });
+
+      const modalLink = document.querySelector('.modal-footer > a');
+      modalLink.href = state.currentPost.link;
+      modalLink.textContent = i18next.t('readMore');
+
+      const modalCloseButton = document.querySelector('.modal-footer > button');
+      modalCloseButton.textContent = i18next.t('closeButton');
+    }
   };
 
   const watchedState = onChange(state, (path) => {
-    if (path === 'feeds' || path === 'posts' || path === 'readPosts') {
+    if (path === 'feeds' || path === 'posts' || path === 'readPosts' || path === 'currentPost') {
       updateUI();
     }
   });
@@ -233,10 +250,10 @@ export const app = () => {
 
       document.querySelector('.posts').addEventListener('click', (e) => {
         if (e.target.tagName === 'BUTTON') {
-          const postId = e.target.getAttribute('data-post-id');
-          console.log(postId);
-
-          watchedState.readPosts.add(postId);
+          const id = e.target.getAttribute('data-post-id');
+          const currentPost = state.posts.find((post) => post.id === id);
+          watchedState.currentPost = currentPost;
+          watchedState.readPosts.add(id);
         }
       });
     });

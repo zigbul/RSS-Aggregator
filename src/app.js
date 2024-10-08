@@ -96,8 +96,9 @@ export const app = () => {
     url: yup.string().url(i18next.t('validation.url')).required(i18next.t('validation.required')),
   });
 
-  const checkUniqueUrl = (url) => {
-    return !state.feeds.some((feed) => feed.url === url);
+  const checkUniqueUrl = (userInput) => {
+    const host = new URL(userInput).host;
+    return !state.feeds.some((feed) => new URL(feed.url).host === host);
   };
 
   function createElement(tag = 'div', classList = [], text = '', children = []) {
@@ -239,6 +240,7 @@ export const app = () => {
                 watchedState.posts.push(...posts);
                 resetForm();
                 updateFeedbackText(i18next.t('success'));
+                console.log(state);
               })
               .catch(() => updateFeedbackText(i18next.t('networkError')));
           })

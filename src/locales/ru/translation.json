@@ -13,6 +13,7 @@
   "feedback": "Обратная связь",
   "footerText": "Создано на",
   "footerLink": "Hexlet",
+  "previewButton": "Просмотр",
 
   "parseError": "Ошибка парсинга",
   "networkError": "Ошибка сети",

@@ -78,7 +78,6 @@ export const app = () => {
     urlInputLabel: document.querySelector('.form-floating label'),
     addButton: document.querySelector('#addButton'),
     exampleText: document.querySelector('#exampleText'),
-    feedback: document.querySelector('.feedback'),
     footerText: document.querySelector('#footerText'),
     footerLink: document.querySelector('#footerText a'),
   };

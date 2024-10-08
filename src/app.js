@@ -6,6 +6,13 @@ const renderInitialText = (elements, i18n) => {
   for (let elementKey in elements) {
     elements[elementKey].textContent = i18n.t(elementKey);
   }
+
+  const footerLink = document.createElement('a');
+  footerLink.href = 'https://ru.hexlet.io/professions/frontend/projects/11';
+  footerLink.target = '_blank';
+  footerLink.id = 'footerLink';
+  footerLink.textContent = i18n.t('footerLink');
+  elements.footerText.append(footerLink);
 };
 
 const parseRSS = (data) => {
@@ -43,6 +50,7 @@ const updateFeedbackText = (message) => {
 
   if (message === i18next.t('success')) {
     feedbackElement.classList.add('text-success');
+    return;
   }
 
   feedbackElement.classList.add('text-danger');
@@ -73,10 +81,6 @@ export const app = () => {
 
   const elements = {
     pageTitle: document.querySelector('title'),
-    modalTitle: document.querySelector('.modal-title'),
-    modalBody: document.querySelector('.modal-body'),
-    readMore: document.querySelector('.modal-footer a'),
-    closeButton: document.querySelector('.modal-footer button'),
     appTitle: document.querySelector('h1'),
     intro: document.querySelector('.lead'),
     urlInput: document.querySelector('.form-floating input'),
@@ -84,7 +88,6 @@ export const app = () => {
     addButton: document.querySelector('#addButton'),
     exampleText: document.querySelector('#exampleText'),
     footerText: document.querySelector('#footerText'),
-    footerLink: document.querySelector('#footerLink'),
   };
 
   const schema = yup.object().shape({
@@ -144,6 +147,8 @@ export const app = () => {
       ['btn', 'btn-primary', 'btn-sm'],
       i18next.t('previewButton'),
     );
+    button.dataBsToggle = 'modal';
+    button.dataBsTarget = '#exampleModal';
 
     const container = createElement('li', containerClassList, null, [link, button]);
 
@@ -218,17 +223,19 @@ export const app = () => {
                 resetForm();
                 updateFeedbackText(i18next.t('success'));
               })
-              .catch(() => updateFeedbackText('networkError'));
+              .catch(() => updateFeedbackText(i18next.t('networkError')));
           })
-          .catch((error) => {
+          .catch(() => {
             input.classList.add('is-invalid');
-            updateFeedbackText(error.message);
+            updateFeedbackText(i18next.t('validation.url'));
           });
       });
 
       document.querySelector('.posts').addEventListener('click', (e) => {
         if (e.target.tagName === 'BUTTON') {
           const postId = e.target.getAttribute('data-post-id');
+          console.log(postId);
+
           watchedState.readPosts.add(postId);
         }
       });

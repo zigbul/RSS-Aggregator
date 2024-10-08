@@ -14,7 +14,7 @@
   "closeButton": "Close",
   "posts": "Posts",
   "feeds": "Feeds",
-  "footerText": "Created by",
+  "footerText": "Created by ",
   "footerLink": "Hexlet",
   "validation": {
     "required": "This field is required",

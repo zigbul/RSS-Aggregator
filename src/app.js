@@ -66,9 +66,11 @@ const resetForm = () => {
   feedbackElement.classList.remove('text-danger');
 };
 
-const makeUrl = (userInput) => {
-  const baseUrl = 'https://allorigins.hexlet.app/get?url=';
-  return new URL(baseUrl + encodeURIComponent(userInput)).href;
+const makeUrl = (url) => {
+  const urlWithProxy = new URL('/get', 'https://allorigins.hexlet.app');
+  urlWithProxy.searchParams.set('url', url);
+  urlWithProxy.searchParams.set('disableCache', 'true');
+  return urlWithProxy.toString();
 };
 
 export const app = () => {

@@ -70,6 +70,7 @@ const makeUrl = (url) => {
   const urlWithProxy = new URL('/get', 'https://allorigins.hexlet.app');
   urlWithProxy.searchParams.set('url', url);
   urlWithProxy.searchParams.set('disableCache', 'true');
+  console.log(urlWithProxy);
   return urlWithProxy.toString();
 };
 

@@ -21,7 +21,7 @@
     "url": "Enter a valid URL",
     "notOneOf": "This value is not allowed"
   },
-  "urlAlreadyExists": "This URL is already added",
+  "urlAlreadyExists": "This RSS is already added",
   "feedTitle": "{{title}}",
   "feedDescription": "{{description}}"
 }

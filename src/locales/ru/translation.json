@@ -22,7 +22,7 @@
     "notOneOf": "Такое значение не разрешено"
   },
   "success": "RSS успешно загружен",
-  "urlAlreadyExists": "Такой URL уже добавлен",
+  "urlAlreadyExists": "RSS уже существует",
   "feedTitle": "{{title}}",
   "feedDescription": "{{description}}"
 }

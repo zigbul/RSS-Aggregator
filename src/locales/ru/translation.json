@@ -13,8 +13,10 @@
   "footerText": "Создано на ",
   "footerLink": "Hexlet",
   "previewButton": "Просмотр",
+
   "parseError": "Ошибка парсинга",
-  "networkError": "Ошибка сети",
+  "networkError": "Ресурс не содержит валидный RSS",
+
   "urlMustBeAValidURL": "Ссылка должна быть валидным URL",
   "success": "RSS успешно загружен",
   "urlIsInvalid": "RSS уже существует",

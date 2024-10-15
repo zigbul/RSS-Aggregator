@@ -21,7 +21,7 @@ const parseRSS = (data) => {
   const parseError = doc.querySelector('parsererror');
 
   if (parseError) {
-    throw new Error(i18next.t('parseError'));
+    throw new Error('parseError');
   }
 
   const feedTitle = doc.querySelector('channel > title').textContent;
@@ -240,7 +240,13 @@ export const app = () => {
           .validate({ url })
           .then(() => {
             fetch(makeUrl(url))
-              .then((response) => response.json())
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error('networkError');
+                }
+
+                return response.json();
+              })
               .then((data) => {
                 const { feed, posts } = parseRSS(data);
                 watchedState.feeds.push(feed);
@@ -248,7 +254,9 @@ export const app = () => {
                 resetForm();
                 updateFeedbackText(i18next.t('success'));
               })
-              .catch(() => updateFeedbackText(i18next.t('networkError')));
+              .catch((e) => {
+                updateFeedbackText(i18next.t(e.message));
+              });
           })
           .catch((e) => {
             const message = normalizeText(e.message);

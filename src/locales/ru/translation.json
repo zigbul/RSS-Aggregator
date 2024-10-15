@@ -14,8 +14,8 @@
   "footerLink": "Hexlet",
   "previewButton": "Просмотр",
 
-  "parseError": "Ошибка парсинга",
-  "networkError": "Ресурс не содержит валидный RSS",
+  "parseError": "Ресурс не содержит валидный RSS",
+  "networkError": "Ошибка сети",
 
   "urlMustBeAValidURL": "Ссылка должна быть валидным URL",
   "success": "RSS успешно загружен",

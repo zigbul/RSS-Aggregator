@@ -13,16 +13,11 @@
   "footerText": "Создано на ",
   "footerLink": "Hexlet",
   "previewButton": "Просмотр",
-
   "parseError": "Ошибка парсинга",
   "networkError": "Ошибка сети",
-  "validation": {
-    "required": "Нужно указать URL",
-    "url": "Ссылка должна быть валидным URL",
-    "notOneOf": "Такое значение не разрешено"
-  },
+  "urlMustBeAValidURL": "Ссылка должна быть валидным URL",
   "success": "RSS успешно загружен",
-  "urlAlreadyExists": "RSS уже существует",
+  "urlIsInvalid": "RSS уже существует",
   "feedTitle": "{{title}}",
   "feedDescription": "{{description}}"
 }

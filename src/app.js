@@ -68,10 +68,24 @@ const resetForm = () => {
 
 const makeUrl = (url) => {
   const urlWithProxy = new URL('/get', 'https://allorigins.hexlet.app');
-  urlWithProxy.searchParams.set('url', url);
-  urlWithProxy.searchParams.set('disableCache', 'true');
-  console.log(urlWithProxy);
-  return urlWithProxy.toString();
+
+  try {
+    urlWithProxy.searchParams.set('url', url);
+    urlWithProxy.searchParams.set('disableCache', 'true');
+    return urlWithProxy.toString();
+  } catch (e) {
+    throw new Error(e);
+  }
+};
+
+const normalizeText = (message) => {
+  return message
+    .split(' ')
+    .map((word, index) => {
+      if (index === 0) return word;
+      else return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join('');
 };
 
 export const app = () => {
@@ -96,7 +110,13 @@ export const app = () => {
   };
 
   const schema = yup.object().shape({
-    url: yup.string().url(i18next.t('validation.url')).required(i18next.t('validation.required')),
+    url: yup
+      .string()
+      .url(i18next.t('validation.url'))
+      .required(i18next.t('validation.required'))
+      .test('isUnique', i18next.t('urlAlreadyExists'), (url) => {
+        return checkUniqueUrl(url);
+      }),
   });
 
   const checkUniqueUrl = (userInput) => {
@@ -208,16 +228,6 @@ export const app = () => {
       },
     })
     .then(() => {
-      yup.setLocale({
-        mixed: {
-          required: i18next.t('validation.required'),
-          notOneOf: i18next.t('validation.notOneOf'),
-        },
-        string: {
-          url: i18next.t('validation.url'),
-        },
-      });
-
       renderInitialText(elements, i18next);
 
       document.querySelector('#form').addEventListener('submit', (e) => {
@@ -225,12 +235,6 @@ export const app = () => {
 
         const input = document.querySelector('#url-input');
         const url = input.value.trim();
-
-        if (!checkUniqueUrl(url)) {
-          input.classList.add('is-invalid');
-          updateFeedbackText('urlAlreadyExists');
-          return;
-        }
 
         schema
           .validate({ url })
@@ -243,13 +247,13 @@ export const app = () => {
                 watchedState.posts.push(...posts);
                 resetForm();
                 updateFeedbackText(i18next.t('success'));
-                console.log(state);
               })
               .catch(() => updateFeedbackText(i18next.t('networkError')));
           })
-          .catch(() => {
+          .catch((e) => {
+            const message = normalizeText(e.message);
             input.classList.add('is-invalid');
-            updateFeedbackText(i18next.t('validation.url'));
+            updateFeedbackText(i18next.t(message));
           });
       });
 

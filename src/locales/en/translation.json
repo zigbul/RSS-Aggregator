@@ -18,7 +18,7 @@
   "footerLink": "Hexlet",
   "validation": {
     "required": "This field is required",
-    "url": "Enter a valid URL",
+    "url": "Link must be a valid URL",
     "notOneOf": "This value is not allowed"
   },
   "urlAlreadyExists": "This RSS is already added",

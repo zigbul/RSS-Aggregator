@@ -255,6 +255,10 @@ export const app = () => {
                 updateFeedbackText(i18next.t('success'));
               })
               .catch((e) => {
+                if (e.message === 'Failed to fetch') {
+                  updateFeedbackText(i18next.t('networkError'));
+                }
+
                 updateFeedbackText(i18next.t(e.message));
               });
           })

@@ -257,9 +257,9 @@ export const app = () => {
               .catch((e) => {
                 if (e.message === 'Failed to fetch') {
                   updateFeedbackText(i18next.t('networkError'));
+                } else {
+                  updateFeedbackText(i18next.t(e.message));
                 }
-
-                updateFeedbackText(i18next.t(e.message));
               });
           })
           .catch((e) => {

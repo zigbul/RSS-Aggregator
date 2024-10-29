@@ -3,11 +3,11 @@ import onChange from 'on-change';
 import i18next from './i18n.js';
 
 const renderInitialText = (elements, i18n) => {
-  for (const elementKey in elements) {
-    if (elements.hasOwnProperty(elementKey)) {
-      elements[elementKey].textContent = i18n.t(elementKey);
-    }
-  }
+  const tags = { ...elements };
+
+  Object.entries(tags).forEach(([key, value]) => {
+    value.textContent = i18n.t(key);
+  });
 
   const footerLink = document.createElement('a');
   footerLink.href = 'https://ru.hexlet.io/professions/frontend/projects/11';
@@ -80,8 +80,8 @@ const makeUrl = (url) => {
   }
 };
 
-const normalizeText = (message) =>
-  message
+function normalizeText(message) {
+  return message
     .split(' ')
     .map((word, index) => {
       if (index === 0) return word;
@@ -89,6 +89,7 @@ const normalizeText = (message) =>
       return word.charAt(0).toUpperCase() + word.slice(1);
     })
     .join('');
+}
 
 const app = () => {
   const state = {
@@ -112,7 +113,7 @@ const app = () => {
   };
 
   const checkUniqueUrl = (userInput) => {
-    const host = new URL(userInput).host;
+    const { host } = new URL(userInput);
     return !state.feeds.some((feed) => new URL(feed.url).host === host);
   };
 

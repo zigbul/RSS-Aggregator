@@ -155,15 +155,15 @@ export const app = () => {
 
   function createPostsBlock(post) {
     const isPostRead = state.readPosts.has(post.id);
+
     const containerClassList = [
       'list-group-item',
       'd-flex',
       'justify-content-between',
       'align-items-center',
-      isPostRead ? 'fw-normal' : 'fw-bold',
     ];
 
-    const link = createElement('a', [], post.title);
+    const link = createElement('a', [isPostRead ? 'fw-normal' : 'fw-bold'], post.title);
     link.href = post.link;
     link.target = '_blank';
     link.rel = 'noopener noreferrer';

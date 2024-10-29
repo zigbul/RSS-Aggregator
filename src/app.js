@@ -5,8 +5,9 @@ import i18next from './i18n.js';
 const renderInitialText = (elements, i18n) => {
   const tags = { ...elements };
 
-  Object.entries(tags).forEach(([key, value]) => {
-    value.textContent = i18n.t(key);
+  Object.entries(tags).forEach(([key, tag]) => {
+    const element = tag;
+    element.textContent = i18n.t(key);
   });
 
   const footerLink = document.createElement('a');

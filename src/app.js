@@ -1,10 +1,12 @@
 import * as yup from 'yup';
-import i18next from './i18n';
 import onChange from 'on-change';
+import i18next from './i18n.js';
 
 const renderInitialText = (elements, i18n) => {
-  for (let elementKey in elements) {
-    elements[elementKey].textContent = i18n.t(elementKey);
+  for (const elementKey in elements) {
+    if (elements.hasOwnProperty(elementKey)) {
+      elements[elementKey].textContent = i18n.t(elementKey);
+    }
   }
 
   const footerLink = document.createElement('a');
@@ -78,17 +80,17 @@ const makeUrl = (url) => {
   }
 };
 
-const normalizeText = (message) => {
-  return message
+const normalizeText = (message) =>
+  message
     .split(' ')
     .map((word, index) => {
       if (index === 0) return word;
-      else return word.charAt(0).toUpperCase() + word.slice(1);
+
+      return word.charAt(0).toUpperCase() + word.slice(1);
     })
     .join('');
-};
 
-export const app = () => {
+const app = () => {
   const state = {
     feeds: [],
     posts: [],
@@ -109,20 +111,18 @@ export const app = () => {
     footerText: document.querySelector('#footerText'),
   };
 
+  const checkUniqueUrl = (userInput) => {
+    const host = new URL(userInput).host;
+    return !state.feeds.some((feed) => new URL(feed.url).host === host);
+  };
+
   const schema = yup.object().shape({
     url: yup
       .string()
       .url(i18next.t('validation.url'))
       .required(i18next.t('validation.required'))
-      .test('isUnique', i18next.t('urlAlreadyExists'), (url) => {
-        return checkUniqueUrl(url);
-      }),
+      .test('isUnique', i18next.t('urlAlreadyExists'), (url) => checkUniqueUrl(url)),
   });
-
-  const checkUniqueUrl = (userInput) => {
-    const host = new URL(userInput).host;
-    return !state.feeds.some((feed) => new URL(feed.url).host === host);
-  };
 
   function createElement(tag = 'div', classList = [], text = '', children = []) {
     const element = document.createElement(tag);
@@ -254,16 +254,16 @@ export const app = () => {
                 resetForm();
                 updateFeedbackText(i18next.t('success'));
               })
-              .catch((e) => {
-                if (e.message === 'Failed to fetch') {
+              .catch((error) => {
+                if (error.message === 'Failed to fetch') {
                   updateFeedbackText(i18next.t('networkError'));
                 } else {
-                  updateFeedbackText(i18next.t(e.message));
+                  updateFeedbackText(i18next.t(error.message));
                 }
               });
           })
-          .catch((e) => {
-            const message = normalizeText(e.message);
+          .catch((error) => {
+            const message = normalizeText(error.message);
             input.classList.add('is-invalid');
             updateFeedbackText(i18next.t(message));
           });
@@ -279,3 +279,5 @@ export const app = () => {
       });
     });
 };
+
+export default app;

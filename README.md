@@ -44,7 +44,3 @@ Frontend: HTML, CSS, JavaScript.
 3.Сделайте изменения и зафиксируйте их: git commit -m 'Add some feature'.
 4.Отправьте изменения: git push origin feature-name.
 5.Создайте pull request.
-
-### Hexlet tests and linter status:
-
-[![Actions Status](https://github.com/zigbul/frontend-project-11/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/zigbul/frontend-project-11/actions)
